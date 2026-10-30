@@ -65,7 +65,7 @@ const {launchBrowser}=require('./browser.cjs');
   assert.equal(await page.textContent('#championship-title'),'Daily race');
   await page.waitForFunction(()=>document.querySelector('#championship-personal').textContent.includes('Sign in'),null,{polling:20});
   assert.match(await page.textContent('#daily-race-countdown'),/^Time left \d{2}:\d{2}:\d{2}$/);
-  assert.equal(await page.textContent('#daily-race-time'),'41.667 s');
+  assert.equal(await page.textContent('#daily-race-time'),'00:41.667');
   await page.evaluate(()=>{document.querySelector('#settings-dialog').close();document.querySelector('#dashboard-details').hidden=true;});
   await page.locator('#chat-close').click();
   const before=await page.textContent('#daily-race-countdown');
@@ -74,7 +74,7 @@ const {launchBrowser}=require('./browser.cjs');
   board.db.prepare('INSERT INTO championship_laps VALUES (?,?,?,?,?,?)').run('new-leader',1,today,'1',revision,4800);
   await page.waitForTimeout(30000);
   await page.waitForFunction(()=>document.querySelector('#daily-race-name').textContent==='Eve',null,{polling:20});
-  assert.equal(await page.textContent('#daily-race-time'),'40.000 s','Leader refreshes during driving');
+  assert.equal(await page.textContent('#daily-race-time'),'00:40.000','Leader refreshes during driving');
   for(const [label,width,height] of [['desktop',1280,900],['mobile',390,844],['landscape',844,390]]){
    await page.setViewportSize({width,height});
    assert(await page.locator('#daily-race-hud').isVisible());
